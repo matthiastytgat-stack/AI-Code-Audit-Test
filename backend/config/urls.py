@@ -63,6 +63,7 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Type checking and validation
-assert all(
-    isinstance(pattern, (URLPattern, URLResolver)) for pattern in urlpatterns
-), "All URL patterns must be either URLPattern or URLResolver instances"
+if not all(isinstance(pattern, (URLPattern, URLResolver)) for pattern in urlpatterns):
+    raise AssertionError(
+        "All URL patterns must be either URLPattern or URLResolver instances"
+    )
