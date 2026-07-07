@@ -1,31 +1,25 @@
 version: 2.1
 
 jobs:
-  build:
+  aikido-scan:
     docker:
-      - image: cimg/base:current
+      - image: cimg/node:20.11
     steps:
       - checkout
       - run:
-          name: Install dependencies
-          command: echo "install dependencies here"
+          name: Install Aikido CI API Client
+          command: npm install --global @aikidosec/ci-api-client
       - run:
-          name: Build
-          command: echo "build steps here"
-
-  test:
-    docker:
-      - image: cimg/base:current
-    steps:
-      - checkout
-      - run:
-          name: Run tests
-          command: echo "test steps here"
+          name: Run Aikido Scan (release)
+          command: |
+            aikido-api-client scan-release "$AIKIDO_REPOSITORY_ID" "$CIRCLE_SHA1" \
+              --apikey "$AIKIDO_CLIENT_API_KEY" \
+              --fail-on-sast-scan \
+              --fail-on-iac-scan \
+              --fail-on-secrets-scan
 
 workflows:
-  build-and-test:
+  aikido-security-scan:
     jobs:
-      - build
-      - test:
-          requires:
-            - build
+      - aikido-scan:
+          context: aikido  # holds AIKIDO_CLIENT_API_KEY as a CircleCI context/env var
