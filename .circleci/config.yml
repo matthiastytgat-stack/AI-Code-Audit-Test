@@ -12,7 +12,7 @@ jobs:
       - run:
           name: Run Aikido Scan (release)
           command: |
-            aikido-api-client scan-release "$AIKIDO_REPOSITORY_ID" "$CIRCLE_SHA1" \
+            npx --yes @aikidosec/ci-api-client scan-release "$AIKIDO_REPOSITORY_ID" "$CIRCLE_SHA1" \
               --apikey "$AIKIDO_CLIENT_API_KEY" \
               --fail-on-sast-scan \
               --fail-on-iac-scan \
