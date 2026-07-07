@@ -7,9 +7,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install Aikido CI API Client
-          command: npm install --global @aikidosec/ci-api-client
-      - run:
           name: Run Aikido Scan (release)
           command: |
             npx --yes @aikidosec/ci-api-client scan-release "$AIKIDO_REPOSITORY_ID" "$CIRCLE_SHA1" \
